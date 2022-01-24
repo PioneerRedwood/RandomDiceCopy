@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DiceManager : MonoBehaviour
 {
+	#region Singleton
 	private static DiceManager instance = null;
 	private void InitInstance()
 	{
@@ -30,13 +32,21 @@ public class DiceManager : MonoBehaviour
 		}
 	}
 
+	#endregion
+
 	private void Start()
 	{
 		Debug.Log("DiceManager start");
 		InitInstance();
 
+		Initialize();
 	}
 
-	[SerializeField]
-	public List<Die> Dice;
+	public void Initialize()
+	{
+
+	}
+
+
+
 }

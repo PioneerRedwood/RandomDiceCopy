@@ -33,7 +33,6 @@ public class EyeBullet : MonoBehaviour
 			{
 				DoDamage();
 
-				Debug.Log("Damage");
 				Destroy(gameObject);
 			}
 		}
@@ -45,8 +44,6 @@ public class EyeBullet : MonoBehaviour
 	
 	private void DoDamage()
 	{
-		// 크리티컬 계산
-
-		//target.GetComponent<Monster>().OnDamage(damage, type);
+		target.GetComponent<Monster>().OnDamage(owner);
 	}
 }

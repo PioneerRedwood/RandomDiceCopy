@@ -6,19 +6,18 @@ using UnityEngine;
 public class DieEye : MonoBehaviour
 {
 	[SerializeField] private EyeBullet bullet;
-	[SerializeField] private float attackDelay = 0.5f;
 
 	private bool initialized = false;
 	private GameObject target;
 
-	private float attackTimeCount = 0f;
+	private float attackDelay = 0f;
 	private Die owner;
 	public int NumOfAttacks { get; private set; }
 
 	public void InitEye(Die _owner)
 	{
 		owner = _owner;
-		bullet.GetComponent<SpriteRenderer>().color = owner.color;
+		bullet.GetComponent<SpriteRenderer>().color = owner.property.Color;
 
 		if (initialized)
 		{
@@ -27,6 +26,7 @@ public class DieEye : MonoBehaviour
 
 		initialized = true;
 		NumOfAttacks = 0;
+
 	}
 
 	public void SetTarget(GameObject _target)
@@ -36,33 +36,35 @@ public class DieEye : MonoBehaviour
 
 	void Update()
 	{
-		if (!initialized)
+		if (!initialized || owner.IsDragging)
 		{
 			return;
 		}
 
-		if (attackDelay <= attackTimeCount)
+		if (owner.property.CurrentAttackSpeed <= attackDelay)
 		{
 			Attack();
-			attackTimeCount = 0f;
+			attackDelay = 0f;
 		}
-		attackTimeCount += Time.deltaTime;
+		attackDelay += Time.deltaTime;
 	}
 
 	public void Attack()
 	{
-		if(target != null)
+		if (target != null)
 		{
 			EyeBullet temp = Instantiate(bullet, transform);
 
 			temp.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(1f, 1f, 0);
 
-			owner.color.a = 1f;
-			temp.GetComponent<SpriteRenderer>().color = owner.color;
+			Color thisColor = owner.property.Color;
+			thisColor.a = 1f;
+			// µð¹ö±ë
+			temp.GetComponent<SpriteRenderer>().color = thisColor;
 
 			temp.SetTarget(target);
 			temp.SetOwner(owner);
-			
+
 			NumOfAttacks++;
 		}
 	}

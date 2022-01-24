@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
+	#region Singleton
 	private static StageManager instance = null;
 
 	private void InitInstance()
 	{
-		if(null == instance)
+		if (null == instance)
 		{
 			instance = this;
 
@@ -24,7 +25,7 @@ public class StageManager : MonoBehaviour
 	{
 		get
 		{
-			if(null == instance)
+			if (null == instance)
 			{
 				return null;
 			}
@@ -32,13 +33,15 @@ public class StageManager : MonoBehaviour
 		}
 	}
 
+	#endregion
+
 	// 스테이지
 	[SerializeField] private Stage[] stages = null;
-	private int currStageIndex = 0;
+	public int CurrStageIndex { get; private set; }
 
 	public Stage GetCurrentStage()
 	{
-		return stages[currStageIndex];
+		return stages[CurrStageIndex];
 	}
 
 	[SerializeField] private Vector2[] waypoints = null;
@@ -53,25 +56,22 @@ public class StageManager : MonoBehaviour
 		InitInstance();
 	}
 
-	void Start()
+	public void LoadStage(int index)
 	{
-		Debug.Log($"Start stage #{currStageIndex}");
-		StartStage();
+		if (stages.Length > index)
+		{
+			CurrStageIndex = index;
+
+			Stage stage = Instantiate(stages[index]);
+			stage.transform.SetParent(gameObject.transform);
+
+			stage.BeginStage();
+		}
+		else
+		{
+			// 모든 스테이지 끝
+
+		}
 	}
-
-	void Update()
-	{
-
-	}
-
-	// 스테이지 시작
-	void StartStage()
-	{
-		Stage stage = Instantiate(stages[currStageIndex++]);
-
-		stage.BeginStage();
-	}
-
-	// 스테이지 끝
 
 }

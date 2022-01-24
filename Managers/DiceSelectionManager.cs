@@ -77,12 +77,6 @@ public class DiceSelectionManager : MonoBehaviour
 		ShowDiceCouple();
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
 	private void Awake()
 	{
 		//Debug.Log("DiceSelectionManager AWake()");
@@ -97,7 +91,7 @@ public class DiceSelectionManager : MonoBehaviour
 
 		for (int i = 0; i < GamePrefabManager.Instance.Dice.Count; ++i)
 		{
-			diceInfos.Add(new DieInfo(i, GamePrefabManager.Instance.Dice[i].BodySprite));
+			diceInfos.Add(new DieInfo(i, GamePrefabManager.Instance.Dice[i].BodySpriteRenderer.sprite));
 		}
 
 		ShuffleDice();

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+	#region Singleton
 	private static UIManager instance = null;
 
 	private void InitializeInstance()
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour
 			return instance;
 		}
 	}
+	#endregion
 
 	private void Awake()
 	{
@@ -46,29 +48,32 @@ public class UIManager : MonoBehaviour
 
 	void Initialize()
 	{
-		canvas.enabled = false;
+		// 디버깅
+		canvas.gameObject.SetActive(false);
 	}
 
 	public void Activate()
 	{
-		canvas.enabled = true;
-		// 플레이어들 다이스 덱 보이기
+		canvas.gameObject.SetActive(true);
+
 		SetDiceImages();
+
+		StageManager.Instance.LoadStage(0);
 	}
 	public void Deactivate()
 	{
-		canvas.enabled = false;
+		canvas.gameObject.SetActive(false);
 	}
 
-	// TODO: 디버깅 위해 세팅
 	public Image[] diceImages;
 	public void SetDiceImages()
 	{
 		// 플레이어 다이스가 없는지 확인할 것
 		List<Die> dice = GameManager.Instance.SelfPlayer.OwnedDice;
-		for (int i = 0; i < dice.Count; ++i)
+
+		for (int i = 0; i < diceImages.Length; ++i)
 		{
-			diceImages[i].sprite = dice[i].BodySprite;
+			diceImages[i].sprite = dice[i].BodySpriteRenderer.sprite;
 
 			int index = dice[i].name.IndexOf("Die");
 			string dieName = dice[i].name.Substring(0, index);
@@ -78,18 +83,5 @@ public class UIManager : MonoBehaviour
 				.SetDelegate(("Upgrade" + dieName + "Dice"));
 		}
 	}
-
-	// Start is called before the first frame update
-	void Start()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
 	
 }

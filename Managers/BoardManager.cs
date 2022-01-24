@@ -16,7 +16,6 @@ public class BoardManager : MonoBehaviour
 		board.InitializeBoard(player);
 	}
 
-	// 
 	public void CreateDie()
 	{
 		board.GenerateRandomDie();
@@ -40,7 +39,6 @@ public class BoardManager : MonoBehaviour
 		{
 			canMerge = true;
 
-			// 성공하면 
 			src.OnDetached();
 
 			board.OnMerged(dst);
@@ -50,6 +48,9 @@ public class BoardManager : MonoBehaviour
 	}
 
 	// TODO: Upgrade dice
-
-	// 
+	public bool UpgradeDie(DieType type)
+	{
+		//board.UpgradeDie();
+		return true;
+	}
 }

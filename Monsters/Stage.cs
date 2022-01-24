@@ -24,21 +24,30 @@ public class Stage : MonoBehaviour
 
 	[SerializeField] private float firstSpawnDelay = 0.0f;
 	[SerializeField] private float monsterSpawnDelay = 0.0f;
+	[SerializeField] private float increasingHP;
+
+	public bool StageCleared { get; private set; }
 
 	private int waveIdx = 0;
 	private List<Monster> monsters = new List<Monster>();
 
 	public void BeginStage()
 	{
-		InvokeRepeating("StartWave", 0.0f, nextWaveDelay);
+		InvokeRepeating(nameof(StartWave), 0.0f, nextWaveDelay);
 	}
 
 	void StartWave()
 	{
-		Debug.Log($"Wave #{waveIdx}");
-		StartCoroutine(SpawnMonster(waveIdx));
-		// 두개 이상 있을때 인덱스 상승
-		//waveIdx++;
+		if (waves.Length > waveIdx)
+		{
+			StartCoroutine(SpawnMonster(waveIdx));
+
+			waveIdx++;
+		}
+		else
+		{
+			StageManager.Instance.LoadStage(StageManager.Instance.CurrStageIndex + 1);
+		}
 	}
 
 	private IEnumerator SpawnMonster(int idx)
@@ -50,9 +59,11 @@ public class Stage : MonoBehaviour
 			Vector2 pos = StageManager.Instance.GetWaypoints()[0];
 
 			Monster monster =
-					Instantiate(waves[idx].monster,
-											new Vector3(pos.x, pos.y, 0),
-											Quaternion.identity);
+				Instantiate(waves[idx].monster, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+
+			int waveOffset = waveIdx == 0 ? 1 : waveIdx + 1;
+
+			monster.SetHP(monster.GetHP() + (increasingHP * waveOffset));
 
 			if (monster != null)
 			{
@@ -63,6 +74,9 @@ public class Stage : MonoBehaviour
 			}
 			yield return new WaitForSeconds(monsterSpawnDelay);
 		}
+
+		Debug.Log("wave over");
+		GameManager.Instance.SelfPlayer.AddSP(150);
 
 	}
 }

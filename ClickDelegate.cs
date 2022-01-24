@@ -14,15 +14,16 @@ public class ClickDelegate : MonoBehaviour
 
 		UpgradeEmptyDice,
 		UpgradeFireDice,
-		UpgradeElectricDice,
+		UpgradeCrackDice,
 		UpgradeWindDice,
 		UpgradePoisonDice,
 		UpgradeIceDice,
 		UpgradeIronDice,
-		UpgradeBrokenDice,
+		UpgradeMineDice,
 		UpgradeGambleDice,
 		UpgradeLockDice,
-		UpgradeThornDice,
+		UpgradeLightDice,
+		UpgradeTestDice,
 
 	}
 
@@ -61,7 +62,12 @@ public class ClickDelegate : MonoBehaviour
 		{
 			case ClickDelegateEnum.CreateDice:
 				{
-					GameManager.Instance.SelfPlayer.boardManager.CreateDie();
+					// SP ¼Ò¸ð
+					if (GameManager.Instance.SelfPlayer.BuyDie())
+					{
+						GameManager.Instance.SelfPlayer.boardManager.CreateDie();
+					}
+
 					break;
 				}
 			case ClickDelegateEnum.UpgradeFireDice:
@@ -70,10 +76,10 @@ public class ClickDelegate : MonoBehaviour
 					Debug.Log("Upgrade Fire dice!");
 					break;
 				}
-			case ClickDelegateEnum.UpgradeElectricDice:
+			case ClickDelegateEnum.UpgradeCrackDice:
 				{
 					//GameManager.Instance.SelfPlayer.Upgrade
-					Debug.Log("Upgrade Electric dice!");
+					Debug.Log("Upgrade Crack dice!");
 					break;
 				}
 			case ClickDelegateEnum.UpgradeWindDice:
@@ -100,10 +106,10 @@ public class ClickDelegate : MonoBehaviour
 					Debug.Log("Upgrade Iron dice!");
 					break;
 				}
-			case ClickDelegateEnum.UpgradeBrokenDice:
+			case ClickDelegateEnum.UpgradeMineDice:
 				{
 					//GameManager.Instance.SelfPlayer.Upgrade
-					Debug.Log("Upgrade Broken dice!");
+					Debug.Log("Upgrade Mine dice!");
 					break;
 				}
 			case ClickDelegateEnum.UpgradeGambleDice:
@@ -118,10 +124,10 @@ public class ClickDelegate : MonoBehaviour
 					Debug.Log("Upgrade Lock dice!");
 					break;
 				}
-			case ClickDelegateEnum.UpgradeThornDice:
+			case ClickDelegateEnum.UpgradeLightDice:
 				{
 					//GameManager.Instance.SelfPlayer.Upgrade
-					Debug.Log("Upgrade Thorn dice!");
+					Debug.Log("Upgrade Light dice!");
 					break;
 				}
 

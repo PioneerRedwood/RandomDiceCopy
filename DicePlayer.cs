@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DicePlayer : MonoBehaviour
 {
-	[Serializable]
-	public enum PlayType
+	[Serializable] public enum PlayType
 	{
 		Self,
 		AI,
@@ -15,7 +15,53 @@ public class DicePlayer : MonoBehaviour
 
 	public PlayType playType;
 
-	// TODO: 잠시 public으로 바꿈
+	[SerializeField] Text spText;
+	[SerializeField] Text creationDieCostText;
+
+	// SP
+	public int SP
+	{
+		get;
+		private set;
+	}
+	
+	public void AddSP(int sp)
+	{
+		SP += sp;
+
+		UpdateUI();
+	}
+
+	private void UpdateUI()
+	{
+		spText.text = SP.ToString();
+		creationDieCostText.text = CreationDieCost.ToString();
+	}
+
+	public int CreationDieCost
+	{
+		get;
+		private set;
+	}
+
+	public bool BuyDie()
+	{
+		if(SP >= CreationDieCost)
+		{
+			SP -= CreationDieCost;
+
+			CreationDieCost += 10;
+
+			UpdateUI();
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	private List<Die> dice;
 	public List<Die> OwnedDice
 	{
@@ -41,6 +87,11 @@ public class DicePlayer : MonoBehaviour
 
 	void Start()
 	{
+		SP = 100;
+		CreationDieCost = 10;
+		
+		UpdateUI();
+
 		// TODO: 아래는 추후에 수정 필요함
 		Initialize(playType);
 
@@ -63,4 +114,8 @@ public class DicePlayer : MonoBehaviour
 			}
 		}
 	}
+
+	// HP
+
+
 }
